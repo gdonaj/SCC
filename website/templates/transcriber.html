@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Dodajanje transkripcij{% endblock %}
+{% block content %}
+
+<form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+    <div style="align-content: center">
+        <label for="number-select">Izberite posnetek:</label>
+        <select class="form-control" id="idSelect" name="idSelect" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptions|safe }}
+        </select>
+        <button id="showSample" name="showSample" type="submit" class="btn login-btn" value="showSample">Prikaži posnetek</button>
+    </div>
+</form>
+
+<div style="align-content: center">
+    <div class="childDiv" {{ hiddenDiv }}>
+        <form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+            <p style="font-weight: 600; text-align: center;">Podakti o posnetku</p>
+            <p style="font-weight: 600; text-align: left;">ID = {{ showID }}</p>
+            <pre>{{ trdData|safe }}</pre>
+            <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+            <input type="submit" class="btn half-btn" name="showPrev" id="showPrev" value="Prikaži prejšnji posnetek">
+            <input type="submit" class="btn half-btn" name="showNext" id="showNext" value="Prikaži naslednji posnetek">
+        </form>
+    </div><div class="childDiv" {{ hiddenDiv }}>
+        <form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+            <p style="font-weight: 600; text-align: center;">Posnetek</p>
+            <input class="checkmark" type="checkbox" id="startTRS" name="startTRS">
+            <label for="">S prenosom audio datoteke sporočam, da začenjam delo na transkripciji</label><br>
+            <input type="submit" class="btn login-btn" name="dwnlFile" id="dwnlFile" value="Prenesite zvočno datoteko">
+            <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+
+        </form>
+        <hr />
+        <form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+            <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+            <p style="font-weight: 600; text-align: center;">Obstoječe transkripcije</p>
+            <label for="trs-dewnload-select">Izberite datoteko:</label>
+            <select required class="form-control" id="trsSelect" name="trsSelect" style="width: 300px;">
+                <!--- <option selected value="0">Izberite ...</option> --->
+                {{ dropdownOptionsTRS|safe }}
+            </select>
+            <button id="trsDownload" name="trsDownload" type="submit" class="btn login-btn" value="trsDownload">Prenesite transkripcijo</button>
+        </form>
+        <hr />
+        <form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+            <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+            <p style="font-weight: 600; text-align: center;">Nova transkripcija</p>
+            <p id="izberiVrsto">Izberite vrsto transkripcije, ki jo želite naložiti:</p>
+            <input required type="radio" id="trsTypeP" name="trsType" value="pogovorna"> Pogovorna / dobesedna</input><br>
+            <input required type="radio" id="trsTypeS" name="trsType" value="standardizirana"> Standardizirana</input><br>
+            <label id="formTRSFile_label" class="label-form">Naložite novo transkripcijo.</label>
+            <input required class="form-control" type="file" id="formTRSFile" name="formTRSFile" accept=".trs,.exb" />
+            <input type="submit" class="btn login-btn" name="changeFile" id="changeFile" value="Naložite novo transkripcijo" onsubmit="submitForms">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

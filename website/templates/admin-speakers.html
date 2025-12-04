@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Administracija govorcev{% endblock %}
+{% block content %}
+
+<form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+
+    <div style="align-content: center">
+        <label for="number-select">Izberite govorca:</label>
+        <select class="form-control" id="idSelect" name="idSelect" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptions|safe }}
+        </select>
+        <button id="showSpeaker" name="showSpeaker" type="submit" class="btn login-btn" value="showSpeaker">Prikaži govorca</button>
+    </div>
+
+    <div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Izpisek iz baze</p>
+        <p>{{ dataBaseContent|safe }}</p>
+
+        <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+        <input type="submit" class="btn half-btn" name="showPrev" id="showPrev" value="Prikaži prejšnjega">
+        <input type="submit" class="btn half-btn" name="showNext" id="showPrev" value="Prikaži naslednjega">
+    </div><div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Urejanje podatkov</p>
+
+        <label>Text ID</label>
+        <input class="form-control" type="text" id="dataTextID" name="dataTextID" width="100%" maxlength="100" value="{{ dataTextID }}">
+        
+        <label>Source ID</label>
+        <input class="form-control" type="text" id="dataSourceID" name="dataSourceID" width="100%" maxlength="100" value="{{ dataSourceID }}">
+        
+        <label>Recording ID</label>
+        <input class="form-control" type="text" id="dataRecordingID" name="dataRecordingID" width="100%" maxlength="100" value="{{ dataRecordingID }}">
+        
+        <label>Subcorpus</label>
+        <input class="form-control" type="text" id="dataSubcorpus" name="dataSubcorpus" width="100%" maxlength="100" value="{{ dataSubcorpus }}">
+
+        <label>PRS-ID</label>
+        <input class="form-control" type="text" id="dataPRSID" name="dataPRSID" width="100%" maxlength="100" value="{{ dataPRSID }}">
+
+        <label>Spol</label>
+        <input class="form-control" type="text" id="dataGender" name="dataGender" width="100%" maxlength="50" value="{{ dataGender }}">
+
+        <label>Starost</label>
+        <input class="form-control" type="text" id="dataAge" name="dataAge" width="100%" maxlength="50" value="{{ dataAge }}">
+
+        <label>Prvi jezik</label>
+        <input class="form-control" type="text" id="dataLanguageA" name="dataLanguageA" width="100%" maxlength="50" value="{{ dataLanguageA }}">
+
+        <label>Dialekt</label>
+        <input class="form-control" type="text" id="dataDialectType" name="dataDialectType" width="100%" maxlength="50" list="listType" value="{{ dataDialectType }}">
+        <datalist id="listType">
+            <option value="standardni jezik" />
+            <option value="pogovrni jezik" />
+            <option value="narečje" />
+        </datalist>
+
+        <label>Narečna skupina</label>
+        <input class="form-control" type="text" id="dataDialectGRP" name="dataDialectGRP" width="100%" maxlength="50" value="{{ dataDialectGRP }}">
+
+        <label>Narečje</label>
+        <input class="form-control" type="text" id="dataDialect" name="dataDialect" width="100%" maxlength="50" value="{{ dataDialect }}">
+
+        <label>Izobrazba</label>
+        <input class="form-control" type="text" id="dataEducation" name="dataEducation" width="100%" maxlength="50" list="listEducation" value="{{ dataEducation }}">
+        <datalist id="listEducation">
+            <option value="osnovnošolska ali manj" />
+            <option value="srednješolska" />
+            <option value="višješolska ali visokošolska strokovna" />
+            <option value="univerzitetna ali več" />
+            <option value="ne želim odgovoriti" />
+        </datalist>
+        
+        <hr>
+
+        <label>Kraj bivanja</label>
+        <input class="form-control" type="text" id="dataLocationA" name="dataLocationA" width="100%" maxlength="100" value="{{ dataLocationA }}">
+
+        <label>Statistična regija bivanja</label>
+        <input class="form-control" type="text" id="dataLocARegion" name="dataLocARegion" width="100%" maxlength="100" value="{{ dataLocARegion }}">
+
+        <label>Država bivanja</label>
+        <input class="form-control" type="text" id="dataLocACountry" name="dataLocACountry" width="100%" maxlength="100" value="{{ dataLocACountry }}">
+
+        <label>Kraj bivanja v otrštvu</label>
+        <input class="form-control" type="text" id="dataLocationB" name="dataLocationB" width="100%" maxlength="100" value="{{ dataLocationB }}">
+
+        <label>Statistična regija bivanja v otrštvu</label>
+        <input class="form-control" type="text" id="dataLocBRegion" name="dataLocBRegion" width="100%" maxlength="100" value="{{ dataLocBRegion }}">
+
+        <label>Država bivanja v otrštvu</label>
+        <input class="form-control" type="text" id="dataLocBCountry" name="dataLocBCountry" width="100%" maxlength="100" value="{{ dataLocBCountry }}">
+
+        <label>Dodatni kraj bivanja</label>
+        <input class="form-control" type="text" id="dataLocationC" name="dataLocationC" width="100%" maxlength="200" value="{{ dataLocationC }}">
+
+        <label>Statistična regija dodatnega bivanja</label>
+        <input class="form-control" type="text" id="dataLocCRegion" name="dataLocCRegion" width="100%" maxlength="200" value="{{ dataLocCRegion }}">
+
+        <label>Država dodatnega bivanja</label>
+        <input class="form-control" type="text" id="dataLocCCountry" name="dataLocCCountry" width="100%" maxlength="200" value="{{ dataLocCCountry }}">
+
+        <hr>
+
+        <label>Dvojezičnost</label>
+        <input class="form-control" type="text" id="dataBilingual" name="dataBilingual" width="100%" maxlength="10" value="{{ dataBilingual }}">
+
+        <label>Dodatni prvi jezik</label>
+        <input class="form-control" type="text" id="dataLanguageB" name="dataLanguageB" width="100%" maxlength="50" value="{{ dataLanguageB }}">
+
+        <hr>
+
+        <input type="submit" class="btn login-btn" name="changeData" id="changeData" value="Shrani spremembe">
+    </div>
+
+</form>
+
+{% endblock %}

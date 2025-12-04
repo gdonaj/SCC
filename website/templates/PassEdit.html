@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% block title %}PASSWORD{% endblock %} 
+{% block content %}
+
+<div style="align-content: center"></div>
+    <form method="POST" id="formID" name="formID" enctype="multipart/form-data">
+        <label >Uporabnik:</label><br />
+        <select class="form-control" id="ID" name="ID" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptions|safe }}
+        </select>
+        <label >Novo geslo:</label><br />
+        <input type="text" class="form-control" id="PASS" name="PASS" />
+        <button id="uredi" name="uredi" type="submit" class="btn login-btn" value="Uredi">Spremeni</button>
+    </form>
+    <pre>
+{{ results }}
+    </pre>
+</div>
+
+{% endblock %}

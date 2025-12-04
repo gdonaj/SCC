@@ -1,0 +1,1047 @@
+{% extends "base.html" %}
+{% block title %}Oddaja posnetka{% endblock %}
+{% block username %} uporabniško ime {% endblock %}
+{% block content %}
+
+<script>
+
+    function generateForms() {
+        const numForms = parseInt(document.getElementById("stGovorcev").value);
+        document.getElementById('formsContainer').hidden = false;
+        document.getElementById('btnToggleS1').hidden = true;
+        document.getElementById('btnToggleS2').hidden = true;
+        document.getElementById('btnToggleS3').hidden = true;
+        document.getElementById("formsContainer-S1").hidden = true;
+        document.getElementById("formsContainer-S2").hidden = true;
+        document.getElementById("formsContainer-S3").hidden = true;
+        if (numForms >= 1) { document.getElementById('btnToggleS1').hidden = false; }
+        if (numForms >= 2) { document.getElementById('btnToggleS2').hidden = false; }
+        if (numForms == 3) { document.getElementById('btnToggleS3').hidden = false; }
+        document.getElementById('btnToggleAF').hidden = false;
+        document.getElementById('submitButton').hidden = false
+        return;
+    }
+
+    function toggleS1() {
+        document.getElementById("formsContainer-S1").hidden = false;
+        document.getElementById("formsContainer-S2").hidden = true;
+        document.getElementById("formsContainer-S3").hidden = true;
+        document.getElementById("formsContainer-AF").hidden = true;
+    }
+
+    function toggleS2() {
+        document.getElementById("formsContainer-S1").hidden = true;
+        document.getElementById("formsContainer-S2").hidden = false;
+        document.getElementById("formsContainer-S3").hidden = true;
+        document.getElementById("formsContainer-AF").hidden = true;
+    }
+
+    function toggleS3() {
+        document.getElementById("formsContainer-S1").hidden = true;
+        document.getElementById("formsContainer-S2").hidden = true;
+        document.getElementById("formsContainer-S3").hidden = false;
+        document.getElementById("formsContainer-AF").hidden = true;
+    }
+
+    function toggleAF() {
+        document.getElementById("formsContainer-S1").hidden = true;
+        document.getElementById("formsContainer-S2").hidden = true;
+        document.getElementById("formsContainer-S3").hidden = true;
+        document.getElementById("formsContainer-AF").hidden = false;
+    }
+
+</script>
+
+<h3>Prispevajte posnetek</h3>
+
+<form method="POST" id="formID" name="formID" enctype="multipart/form-data" onsubmit="return submitForms()" onkeydown="if(event.keyCode === 13) { return false; }">
+
+    <p style="color:#505050; font-weight: 600;">Ne zapirajte okna pred oddajo. Podatki in posnetek se shranijo šele
+        potem, ko jih
+        uspešno oddate.</p>
+    <p style="color: red; font-weight: 600;" hidden id="par_errors">Napaka: manjkajo nekateri obvezni podatki (označeno
+        z rdečo).</p>
+
+    <label>Koliko govorcev je na posnetku? (1&ndash;3)</label>
+    <select class="form-control" id="stGovorcev" name="stGovorcev" onchange="generateForms()">
+        <option value=0 disabled selected>Izberite število govorcev (1&ndash;3)</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+    </select>
+
+    <div id="formsContainer" class="form-container" hidden>
+
+        <button type="button" class="btn small-btn" id="btnToggleAF" onclick="toggleAF()" hidden>Posnetek</button>
+
+        <div id="formsContainer-AF" class="form-container" hidden>
+            <h5>Vnesite podatke o okoliščinah snemanja</h5>
+
+            <label class="label-form" id="formAF_source_label">Vrsta snemanja</label>
+            <select class="form-control" width="100%" id="formAF_source" name="formAF_source">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="1">Doniran posnetek</option>
+                <option value="2">Naročen posnetek</option>
+            </select>
+
+            <label id="formAF_location_label" class="label-form">Kraj snemanja</label>
+            <p style="color:grey">Pri snemanju na daljavo navedite vse kraje.</p>
+            <input class="form-control" type="text" id="formAF_location" name="formAF_location" width="100%"
+                maxlength="200" placeholder="" />
+
+            <label id="formAF_room_label" class="label-form">Prostor/i, kjer so bili govorci</label>
+            <p style="color:grey">Pri snemanju na daljavo navedite vse prostore.</p>
+            <input class="form-control" type="text" id="formAF_room" name="formAF_room" width="100%" maxlength="200"
+                placeholder="npr. dnevna soba" />
+
+            <label id="formAF_date_label" class="label-form">Datum snemanja</label>
+            <input class="form-control" type="text" id="formAF_date" name="formAF_date" width="100%" maxlength="20"
+                placeholder="V obliki: 2025-01" />
+
+            <label class="label-form" id="formAF_channel_label">Kanal govora</label>
+            <select class="form-control" width="100%" id="formAF_channel" name="formAF_channel">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="1">osebni stik</option>
+                <option value="2">avdio na daljavo</option>
+                <option value="3">video na daljavo</option>
+            </select>
+
+            <label class="label-form" id="formAF_speech_label">Vrsta govora</label>
+            <select class="form-control" width="100%" id="formAF_speech" name="formAF_speech">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="1">družabni pogovor</option>
+                <option value="2">intervju</option>
+                <option value="3">diskusija</option>
+                <option value="4">navodila</option>
+                <option value="5">pripoved</option>
+                <option value="6">razlaga</option>
+            </select>
+
+            <label id="formAF_tool_label" class="label-form">Naprava, s katero ste snemali</label>
+            <p style="color:grey">Opišite napravo čim podrobneje.</p>
+            <input class="form-control" type="text" id="formAF_tool" name="formAF_tool" width="100%" maxlength="200"
+                placeholder="" />
+
+            <label id="formAF_description_label" class="label-form">Opis situacije</label>
+            <p style="color:grey">V par stavkih opišite situacijo, v kateri je nastal posnetek, brez omenjanja osebnih
+                podatkov posameznikov.</p>
+            <textarea class="form-control" type="text" rows="3" id="formAF_description" name="formAF_description"
+                width="100%" maxlength="1000" placeholder=""></textarea>
+
+            <label id="formAF_keywords_label" class="label-form">Ključne besede</label>
+            <p style="color:grey">Navedite 3 do 6 pojmov, ki so lahko v pomoč pri iskanju, opisu ali kategorizaciji.</p>
+            <input class="form-control" type="text" id="formAF_keywords" name="formAF_keywords" width="100%"
+                maxlength="200" placeholder="" />
+
+            <label id="formAF_FILE_label" class="label-form">Avdio datoteka posnetka</label>
+            <input class="form-control" type="file" id="formAF_FILE" name="formAF_FILE" accept="audio/*,video/*" />
+
+        </div>
+
+        <button type="button" class="btn small-btn" id="btnToggleS1" onclick="toggleS1()" hidden>Prvi zaporedni
+            govorec</button>
+
+        <div id="formsContainer-S1" class="form-container" hidden>
+
+            <h5>Vnesite podatke o govorcu, ki začne na posnetku govoriti prvi.</h5>
+
+            <label id="formS1_name_label" class="label-form">Ime in priimek </label>
+            <input class="form-control" type="text" id="formS1_name" name="formS1_name" maxlength="100"
+                placeholder="" />
+
+            <label id="formS1_genderSEL_label" class="label-form">Spol</label>
+            <select class="form-control" id="formS1_genderSEL" name="formS1_genderSEL" onchange="FS1_genderSelect()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="male">Moški</option>
+                <option value="female">Ženski</option>
+                <option value="oth">Drugo (vpišite)</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+
+            <script>
+                function FS1_genderSelect() {
+                    const gender = document.getElementById("formS1_genderSEL").value
+                    if (gender == "oth") {
+                        document.getElementById("formS1_genderWRITE").hidden = false;
+                    } else {
+                        document.getElementById("formS1_genderWRITE").hidden = true;
+                    }
+                }
+            </script>
+
+            <input class="form-control" type="text" id="formS1_genderWRITE" name="formS1_genderWRITE" width="100%"
+                placeholder="" hidden maxlength="50" />
+
+            <label id="formS1_age_label" class="label-form">Starost</label>
+            <input class="form-control" type="text" id="formS1_age" name="formS1_age" width="100%"
+                placeholder="V letih (mesecih) ali kot 'ne želim odgovoriti'" maxlength="50" />
+
+            <label class="label-form">Izobrazba</label>
+            <select class="form-control" id="formS1_education" name="formS1_education"
+                onchange=' document.getElementById("formS1_education_PH").hidden = true; '>
+                <option value="0" disabled selected id="formS1_education_PH">Izberite ...</option>
+                <option value="1">Osnovnošolska ali manj</option>
+                <option value="2">Srednješolska</option>
+                <option value="3">Višješolska ali visokošolska strokovna</option>
+                <option value="4">Univerzitetna ali več</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+
+            <label class="label-form">Prvi jezik</label>
+            <select class="form-control" id="formS1_firstLangSlo" name="formS1_firstLangSlo"
+                onchange="FS1_fistLangSloSEL()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="SL">Slovenščina</option>
+                <option value="XX">Drugo (izberite s seznama jezikov)</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+            <script>
+                function FS1_fistLangSloSEL() {
+                    const slofirst = document.getElementById("formS1_firstLangSlo").value;
+                    if ((slofirst == "SL") || (slofirst == "NoAns")){
+                        document.getElementById("formS1_firstLangSEL").hidden = true;
+                        document.getElementById("formS1_firstLangWRITE").hidden = true;
+                    } else {
+                        document.getElementById("formS1_firstLangSEL").hidden = false;
+                    }
+                }
+            </script>
+            <select class="form-control" width="100%" id="formS1_firstLangSEL" name="formS1_firstLangSEL" hidden
+                onchange="FS1_firstLangSEL()">
+                <option value="0" disabled selected>Kateri je vaš prvi jezik?</option>
+                <option value="SQ">Albanščina</option>
+                <option value="EN">Angleščina</option>
+                <option value="BS">Bosanščina</option>
+                <option value="CNR">Črnogorščina</option>
+                <option value="HR">Hrvaščina</option>
+                <option value="IT">Italijanščina</option>
+                <option value="HU">Madžarščina</option>
+                <option value="MK">Makedonščina</option>
+                <option value="DE">Nemščina</option>
+                <option value="RU">Ruščina</option>
+                <option value="SR">Srbščina</option>
+                <option value="ES">Španščina</option>
+                <option value="UK">Ukrajinščina</option>
+                <option disabled>----------</option>
+                <option value="AR">Arabščina</option>
+                <option value="HY">Armenščina</option>
+                <option value="EU">Baskovščina</option>
+                <option value="BE">Beloruščina</option>
+                <option value="BN">Bengalščina</option>
+                <option value="BG">Bolgarščina</option>
+                <option value="CS">Češčina</option>
+                <option value="DA">Danščina</option>
+                <option value="ET">Estonščina</option>
+                <option value="FI">Finščina</option>
+                <option value="FR">Francoščina</option>
+                <option value="EL">Grščina</option>
+                <option value="KA">Gruzijščina</option>
+                <option value="HE">Hebrejščina</option>
+                <option value="HI">Hindijščina</option>
+                <option value="ID">Indonezijščina</option>
+                <option value="GA">Irščina</option>
+                <option value="IS">Islandščina</option>
+                <option value="JA">Japonščina</option>
+                <option value="CA">Katalonščina</option>
+                <option value="ZH">Kitajščina (mandarinščina)</option>
+                <option value="KO">Korejščina</option>
+                <option value="LV">Latvijščina</option>
+                <option value="LB">Luksemburščina</option>
+                <option value="MT">Malteščina</option>
+                <option value="MN">Mongolščina</option>
+                <option value="NE">Nepalščina</option>
+                <option value="NL">Nizozemščina</option>
+                <option value="NO">Norveščina</option>
+                <option value="FA">Perzijščina</option>
+                <option value="PL">Poljščina</option>
+                <option value="PT">Portugalščina</option>
+                <option value="RO">Romunščina</option>
+                <option value="SK">Slovaščina</option>
+                <option value="SW">Svahili</option>
+                <option value="SV">Švedščina </option>
+                <option value="TA">Tamilščina</option>
+                <option value="TR">Turščina</option>
+                <option value="UR">Urdu</option>
+                <option value="CY">Valižanščina</option>
+                <option disabled>----------</option>
+                <option value="XX">Drugo (Če ni na seznamu, vpišite.)</option>
+            </select>
+            <script>
+                function FS1_firstLangSEL() {
+                    const otherFirst = document.getElementById("formS1_firstLangSEL").value;
+                    if (otherFirst == "XX") {
+                        document.getElementById("formS1_firstLangWRITE").hidden = false;
+                    }
+                    else {
+                        document.getElementById("formS1_firstLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <input class="form-control" type="text" id="formS1_firstLangWRITE" name="formS1_firstLangWRITE" width="100%"
+                placeholder="Vpišite jezik, ki ni na seznamu" hidden maxlength="50" />
+
+            <label class="label-form">Dvojezičnost od rojstva</label>
+            <select class="form-control" id="formS1_addLangTF" name="formS1_addLangTF" onchange="FS1_addLangTF()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="true">Da (izberite s seznama)</option>
+                <option value="false">Ne</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+            <script>
+                function FS1_addLangTF() {
+                    const additional = document.getElementById("formS1_addLangTF").value;
+                    if (additional == "true") {
+                        document.getElementById("formS1_addLangSEL").hidden = false;
+                    }
+                    else {
+                        document.getElementById("formS1_addLangSEL").hidden = true;
+                        document.getElementById("formS1_addLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <select class="form-control" width="100%" id="formS1_addLangSEL" name="formS1_addLangSEL"
+                onchange="FS1_addLangSEL()" hidden>
+                <option value="0" disabled selected>Izberite dodaten prvi jezik</option>
+                <option value="SQ">Albanščina</option>
+                <option value="EN">Angleščina</option>
+                <option value="BS">Bosanščina</option>
+                <option value="CNR">Črnogorščina</option>
+                <option value="HR">Hrvaščina</option>
+                <option value="IT">Italijanščina</option>
+                <option value="HU">Madžarščina</option>
+                <option value="MK">Makedonščina</option>
+                <option value="DE">Nemščina</option>
+                <option value="RU">Ruščina</option>
+                <option value="SL">Slovenščina</option>
+                <option value="SR">Srbščina</option>
+                <option value="ES">Španščina</option>
+                <option value="UK">Ukrajinščina</option>
+                <option disabled>----------</option>
+                <option value="AR">Arabščina</option>
+                <option value="HY">Armenščina</option>
+                <option value="EU">Baskovščina</option>
+                <option value="BE">Beloruščina</option>
+                <option value="BN">Bengalščina</option>
+                <option value="BG">Bolgarščina</option>
+                <option value="CS">Češčina</option>
+                <option value="DA">Danščina</option>
+                <option value="ET">Estonščina</option>
+                <option value="FI">Finščina</option>
+                <option value="FR">Francoščina</option>
+                <option value="EL">Grščina</option>
+                <option value="KA">Gruzijščina</option>
+                <option value="HE">Hebrejščina</option>
+                <option value="HI">Hindijščina</option>
+                <option value="ID">Indonezijščina</option>
+                <option value="GA">Irščina</option>
+                <option value="IS">Islandščina</option>
+                <option value="JA">Japonščina</option>
+                <option value="CA">Katalonščina</option>
+                <option value="ZH">Kitajščina (mandarinščina)</option>
+                <option value="KO">Korejščina</option>
+                <option value="LV">Latvijščina</option>
+                <option value="LB">Luksemburščina</option>
+                <option value="MT">Malteščina</option>
+                <option value="MN">Mongolščina</option>
+                <option value="NE">Nepalščina</option>
+                <option value="NL">Nizozemščina</option>
+                <option value="NO">Norveščina</option>
+                <option value="FA">Perzijščina</option>
+                <option value="PL">Poljščina</option>
+                <option value="PT">Portugalščina</option>
+                <option value="RO">Romunščina</option>
+                <option value="SK">Slovaščina</option>
+                <option value="SW">Svahili</option>
+                <option value="SV">Švedščina </option>
+                <option value="TA">Tamilščina</option>
+                <option value="TR">Turščina</option>
+                <option value="UR">Urdu</option>
+                <option value="CY">Valižanščina</option>
+                <option disabled>----------</option>
+                <option value="XX">Drugo (Če ni na seznamu, vpišite.)</option>
+            </select>
+            <script>
+                function FS1_addLangSEL() {
+                    console.log("asd")
+                    const additionalLang = document.getElementById("formS1_addLangSEL").value;
+                    if (additionalLang == "XX") {
+                        document.getElementById("formS1_addLangWRITE").hidden = false;
+                    } else {
+                        document.getElementById("formS1_addLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <input class="form-control" type="text" id="formS1_addLangWRITE" name="formS1_addLangWRITE" width="100%"
+                placeholder="Vpišite jezik, ki ni na seznamu" hidden maxlength="50" />
+
+            <label class="label-form">Sedanji kraj in občina bivanja</label>
+            <input class="form-control" type="text" id="formS1_locationA" name="formS1_locationA" width="100%"
+                maxlength="100" placeholder="V obliki: Kraj, Občina" />
+
+            <label class="label-form">Kraj in občina bivanja v otroštvu</label>
+            <input class="form-control" type="text" id="formS1_locationB" name="formS1_locationB" width="100%"
+                maxlength="100" placeholder="V obliki: Kraj, Občina" />
+
+            <label class="label-form">Dodaten kraj in občina bivanja</label>
+            <p style="color:grey">Če ste leto ali več živeli, delali ali se šolali še v kakšnem tretjem kraju.</p>
+            <input class="form-control" type="text" id="formS1_locationC" name="formS1_locationC" width="100%"
+                maxlength="200" placeholder="V obliki: Kraj, Občina; Kraj, Občina" />
+
+            <label id="formS1_FILE_label" class="label-form">Soglasje (izpolnjeno in podpisano soglasje naložite v
+                formatu pdf ali kot
+                sliko)</label>
+            <input class="form-control" type="file" name="formS1_FILE" id="formS1_FILE"
+                accept="image/*,application/pdf" />
+        </div>
+
+        <button type="button" class="btn small-btn" id="btnToggleS2" onclick="toggleS2()" hidden>Drugi zaporedni
+            govorec</button>
+
+        <div id="formsContainer-S2" class="form-container" hidden>
+
+            <h5>Vnesite podatke o govorcu, ki začne na posnetku govoriti drugi.</h5>
+
+            <label id="formS2_name_label" class="label-form">Ime in priimek </label>
+            <input class="form-control" type="text" id="formS2_name" name="formS2_name" maxlength="100"
+                placeholder="" />
+
+            <label id="formS2_genderSEL_label" class="label-form">Spol</label>
+            <select class="form-control" id="formS2_genderSEL" name="formS2_genderSEL" onchange="FS2_genderSelect()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="male">Moški</option>
+                <option value="female">Ženski</option>
+                <option value="oth">Drugo (vpišite)</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+
+            <script>
+                function FS2_genderSelect() {
+                    const gender = document.getElementById("formS2_genderSEL").value
+                    if (gender == "oth") {
+                        document.getElementById("formS2_genderWRITE").hidden = false;
+                    } else {
+                        document.getElementById("formS2_genderWRITE").hidden = true;
+                    }
+                }
+            </script>
+
+            <input class="form-control" type="text" id="formS2_genderWRITE" name="formS2_genderWRITE" width="100%"
+                placeholder="" hidden maxlength="50" />
+
+            <label id="formS2_age_label" class="label-form">Starost</label>
+            <input class="form-control" type="text" id="formS2_age" name="formS2_age" width="100%"
+                placeholder="V letih (mesecih) ali kot 'ne želim odgovoriti'" maxlength="50" />
+
+            <label class="label-form">Izobrazba</label>
+            <select class="form-control" id="formS2_education" name="formS2_education"
+                onchange=' document.getElementById("formS2_education_PH").hidden = true; '>
+                <option value="0" disabled selected id="formS2_education_PH">Izberite ...</option>
+                <option value="1">Osnovnošolska ali manj</option>
+                <option value="2">Srednješolska</option>
+                <option value="3">Višješolska ali visokošolska strokovna</option>
+                <option value="4">Univerzitetna ali več</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+
+            <label class="label-form">Prvi jezik</label>
+            <select class="form-control" id="formS2_firstLangSlo" name="formS2_firstLangSlo"
+                onchange="FS2_fistLangSloSEL()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="SL">Slovenščina</option>
+                <option value="XX">Drugo (izberite s seznama jezikov)</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+            <script>
+                function FS2_fistLangSloSEL() {
+                    const slofirst = document.getElementById("formS2_firstLangSlo").value;
+                    if (slofirst == "SL") {
+                        document.getElementById("formS2_firstLangSEL").hidden = true;
+                        document.getElementById("formS2_firstLangWRITE").hidden = true;
+                    } else {
+                        document.getElementById("formS2_firstLangSEL").hidden = false;
+                    }
+                }
+            </script>
+            <select class="form-control" width="100%" id="formS2_firstLangSEL" name="formS2_firstLangSEL" hidden
+                onchange="FS2_firstLangSEL()">
+                <option value="0" disabled selected>Kateri je vaš prvi jezik?</option>
+                <option value="SQ">Albanščina</option>
+                <option value="EN">Angleščina</option>
+                <option value="BS">Bosanščina</option>
+                <option value="CNR">Črnogorščina</option>
+                <option value="HR">Hrvaščina</option>
+                <option value="IT">Italijanščina</option>
+                <option value="HU">Madžarščina</option>
+                <option value="MK">Makedonščina</option>
+                <option value="DE">Nemščina</option>
+                <option value="RU">Ruščina</option>
+                <option value="SR">Srbščina</option>
+                <option value="ES">Španščina</option>
+                <option value="UK">Ukrajinščina</option>
+                <option disabled>----------</option>
+                <option value="AR">Arabščina</option>
+                <option value="HY">Armenščina</option>
+                <option value="EU">Baskovščina</option>
+                <option value="BE">Beloruščina</option>
+                <option value="BN">Bengalščina</option>
+                <option value="BG">Bolgarščina</option>
+                <option value="CS">Češčina</option>
+                <option value="DA">Danščina</option>
+                <option value="ET">Estonščina</option>
+                <option value="FI">Finščina</option>
+                <option value="FR">Francoščina</option>
+                <option value="EL">Grščina</option>
+                <option value="KA">Gruzijščina</option>
+                <option value="HE">Hebrejščina</option>
+                <option value="HI">Hindijščina</option>
+                <option value="ID">Indonezijščina</option>
+                <option value="GA">Irščina</option>
+                <option value="IS">Islandščina</option>
+                <option value="JA">Japonščina</option>
+                <option value="CA">Katalonščina</option>
+                <option value="ZH">Kitajščina (mandarinščina)</option>
+                <option value="KO">Korejščina</option>
+                <option value="LV">Latvijščina</option>
+                <option value="LB">Luksemburščina</option>
+                <option value="MT">Malteščina</option>
+                <option value="MN">Mongolščina</option>
+                <option value="NE">Nepalščina</option>
+                <option value="NL">Nizozemščina</option>
+                <option value="NO">Norveščina</option>
+                <option value="FA">Perzijščina</option>
+                <option value="PL">Poljščina</option>
+                <option value="PT">Portugalščina</option>
+                <option value="RO">Romunščina</option>
+                <option value="SK">Slovaščina</option>
+                <option value="SW">Svahili</option>
+                <option value="SV">Švedščina </option>
+                <option value="TA">Tamilščina</option>
+                <option value="TR">Turščina</option>
+                <option value="UR">Urdu</option>
+                <option value="CY">Valižanščina</option>
+                <option disabled>----------</option>
+                <option value="XX">Drugo (Če ni na seznamu, vpišite.)</option>
+            </select>
+            <script>
+                function FS2_firstLangSEL() {
+                    const otherFirst = document.getElementById("formS2_firstLangSEL").value;
+                    if (otherFirst == "XX") {
+                        document.getElementById("formS2_firstLangWRITE").hidden = false;
+                    }
+                    else {
+                        document.getElementById("formS2_firstLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <input class="form-control" type="text" id="formS2_firstLangWRITE" name="formS2_firstLangWRITE" width="100%"
+                placeholder="Vpišite jezik, ki ni na seznamu" hidden maxlength="50" />
+
+            <label class="label-form">Dvojezičnost od rojstva</label>
+            <select class="form-control" id="formS2_addLangTF" name="formS2_addLangTF" onchange="FS2_addLangTF()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="true">Da (izberite s seznama)</option>
+                <option value="false">Ne</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+            <script>
+                function FS2_addLangTF() {
+                    const additional = document.getElementById("formS2_addLangTF").value;
+                    if (additional == "true") {
+                        document.getElementById("formS2_addLangSEL").hidden = false;
+                    }
+                    else {
+                        document.getElementById("formS2_addLangSEL").hidden = true;
+                        document.getElementById("formS2_addLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <select class="form-control" width="100%" id="formS2_addLangSEL" name="formS2_addLangSEL"
+                onchange="FS2_addLangSEL()" hidden>
+                <option value="0" disabled selected>Izberite dodaten prvi jezik</option>
+                <option value="SQ">Albanščina</option>
+                <option value="EN">Angleščina</option>
+                <option value="BS">Bosanščina</option>
+                <option value="CNR">Črnogorščina</option>
+                <option value="HR">Hrvaščina</option>
+                <option value="IT">Italijanščina</option>
+                <option value="HU">Madžarščina</option>
+                <option value="MK">Makedonščina</option>
+                <option value="DE">Nemščina</option>
+                <option value="RU">Ruščina</option>
+                <option value="SL">Slovenščina</option>
+                <option value="SR">Srbščina</option>
+                <option value="ES">Španščina</option>
+                <option value="UK">Ukrajinščina</option>
+                <option disabled>----------</option>
+                <option value="AR">Arabščina</option>
+                <option value="HY">Armenščina</option>
+                <option value="EU">Baskovščina</option>
+                <option value="BE">Beloruščina</option>
+                <option value="BN">Bengalščina</option>
+                <option value="BG">Bolgarščina</option>
+                <option value="CS">Češčina</option>
+                <option value="DA">Danščina</option>
+                <option value="ET">Estonščina</option>
+                <option value="FI">Finščina</option>
+                <option value="FR">Francoščina</option>
+                <option value="EL">Grščina</option>
+                <option value="KA">Gruzijščina</option>
+                <option value="HE">Hebrejščina</option>
+                <option value="HI">Hindijščina</option>
+                <option value="ID">Indonezijščina</option>
+                <option value="GA">Irščina</option>
+                <option value="IS">Islandščina</option>
+                <option value="JA">Japonščina</option>
+                <option value="CA">Katalonščina</option>
+                <option value="ZH">Kitajščina (mandarinščina)</option>
+                <option value="KO">Korejščina</option>
+                <option value="LV">Latvijščina</option>
+                <option value="LB">Luksemburščina</option>
+                <option value="MT">Malteščina</option>
+                <option value="MN">Mongolščina</option>
+                <option value="NE">Nepalščina</option>
+                <option value="NL">Nizozemščina</option>
+                <option value="NO">Norveščina</option>
+                <option value="FA">Perzijščina</option>
+                <option value="PL">Poljščina</option>
+                <option value="PT">Portugalščina</option>
+                <option value="RO">Romunščina</option>
+                <option value="SK">Slovaščina</option>
+                <option value="SW">Svahili</option>
+                <option value="SV">Švedščina </option>
+                <option value="TA">Tamilščina</option>
+                <option value="TR">Turščina</option>
+                <option value="UR">Urdu</option>
+                <option value="CY">Valižanščina</option>
+                <option disabled>----------</option>
+                <option value="XX">Drugo (Če ni na seznamu, vpišite.)</option>
+            </select>
+            <script>
+                function FS2_addLangSEL() {
+                    console.log("asd")
+                    const additionalLang = document.getElementById("formS2_addLangSEL").value;
+                    if (additionalLang == "XX") {
+                        document.getElementById("formS2_addLangWRITE").hidden = false;
+                    } else {
+                        document.getElementById("formS2_addLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <input class="form-control" type="text" id="formS2_addLangWRITE" name="formS2_addLangWRITE" width="100%"
+                placeholder="Vpišite jezik, ki ni na seznamu" hidden maxlength="50" />
+
+            <label class="label-form">Sedanji kraj in občina bivanja</label>
+            <input class="form-control" type="text" id="formS2_locationA" name="formS2_locationA" width="100%"
+                maxlength="100" placeholder="V obliki: Kraj, Občina" />
+
+            <label class="label-form">Kraj in občina bivanja v otroštvu</label>
+            <input class="form-control" type="text" id="formS2_locationB" name="formS2_locationB" width="100%"
+                maxlength="100" placeholder="V obliki: Kraj, Občina" />
+
+            <label class="label-form">Dodaten kraj in občina bivanja</label>
+            <p style="color:grey">Če ste leto ali več živeli, delali ali se šolali še v kakšnem tretjem kraju.</p>
+            <input class="form-control" type="text" id="formS2_locationC" name="formS2_locationC" width="100%"
+                maxlength="200" placeholder="V obliki: Kraj, Občina; Kraj, Občina" />
+
+            <label id="formS2_FILE_label" class="label-form">Soglasje (izpolnjeno in podpisano soglasje naložite v
+                formatu pdf ali kot
+                sliko)</label>
+            <input class="form-control" type="file" name="formS2_FILE" id="formS2_FILE"
+                accept="image/*,application/pdf" />
+        </div>
+
+
+        <button type="button" class="btn small-btn" id="btnToggleS3" onclick="toggleS3()" hidden>Tretji zaporedni
+            govorec</button>
+
+        <div id="formsContainer-S3" class="form-container" hidden>
+
+            <h5>Vnesite podatke o govorcu, ki začne na posnetku govoriti tretji.</h5>
+
+            <label id="formS3_name_label" class="label-form">Ime in priimek </label>
+            <input class="form-control" type="text" id="formS3_name" name="formS3_name" maxlength="100"
+                placeholder="" />
+
+            <label id="formS3_genderSEL_label" class="label-form">Spol</label>
+            <select class="form-control" id="formS3_genderSEL" name="formS3_genderSEL" onchange="FS3_genderSelect()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="male">Moški</option>
+                <option value="female">Ženski</option>
+                <option value="oth">Drugo (vpišite)</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+
+            <script>
+                function FS3_genderSelect() {
+                    const gender = document.getElementById("formS3_genderSEL").value
+                    if (gender == "oth") {
+                        document.getElementById("formS3_genderWRITE").hidden = false;
+                    } else {
+                        document.getElementById("formS3_genderWRITE").hidden = true;
+                    }
+                }
+            </script>
+
+            <input class="form-control" type="text" id="formS3_genderWRITE" name="formS3_genderWRITE" width="100%"
+                placeholder="" hidden maxlength="50" />
+
+            <label id="formS3_age_label" class="label-form">Starost</label>
+            <input class="form-control" type="text" id="formS3_age" name="formS3_age" width="100%"
+                placeholder="V letih (mesecih) ali kot 'ne želim odgovoriti'" maxlength="50" />
+
+            <label class="label-form">Izobrazba</label>
+            <select class="form-control" id="formS3_education" name="formS3_education"
+                onchange=' document.getElementById("formS3_education_PH").hidden = true; '>
+                <option value="0" disabled selected id="formS3_education_PH">Izberite ...</option>
+                <option value="1">Osnovnošolska ali manj</option>
+                <option value="2">Srednješolska</option>
+                <option value="3">Višješolska ali visokošolska strokovna</option>
+                <option value="4">Univerzitetna ali več</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+
+            <label class="label-form">Prvi jezik</label>
+            <select class="form-control" id="formS3_firstLangSlo" name="formS3_firstLangSlo"
+                onchange="FS3_fistLangSloSEL()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="SL">Slovenščina</option>
+                <option value="XX">Drugo (izberite s seznama jezikov)</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+            <script>
+                function FS3_fistLangSloSEL() {
+                    const slofirst = document.getElementById("formS3_firstLangSlo").value;
+                    if (slofirst == "SL") {
+                        document.getElementById("formS3_firstLangSEL").hidden = true;
+                        document.getElementById("formS3_firstLangWRITE").hidden = true;
+                    } else {
+                        document.getElementById("formS3_firstLangSEL").hidden = false;
+                    }
+                }
+            </script>
+            <select class="form-control" width="100%" id="formS3_firstLangSEL" name="formS3_firstLangSEL" hidden
+                onchange="FS3_firstLangSEL()">
+                <option value="0" disabled selected>Kateri je vaš prvi jezik?</option>
+                <option value="SQ">Albanščina</option>
+                <option value="EN">Angleščina</option>
+                <option value="BS">Bosanščina</option>
+                <option value="CNR">Črnogorščina</option>
+                <option value="HR">Hrvaščina</option>
+                <option value="IT">Italijanščina</option>
+                <option value="HU">Madžarščina</option>
+                <option value="MK">Makedonščina</option>
+                <option value="DE">Nemščina</option>
+                <option value="RU">Ruščina</option>
+                <option value="SR">Srbščina</option>
+                <option value="ES">Španščina</option>
+                <option value="UK">Ukrajinščina</option>
+                <option disabled>----------</option>
+                <option value="AR">Arabščina</option>
+                <option value="HY">Armenščina</option>
+                <option value="EU">Baskovščina</option>
+                <option value="BE">Beloruščina</option>
+                <option value="BN">Bengalščina</option>
+                <option value="BG">Bolgarščina</option>
+                <option value="CS">Češčina</option>
+                <option value="DA">Danščina</option>
+                <option value="ET">Estonščina</option>
+                <option value="FI">Finščina</option>
+                <option value="FR">Francoščina</option>
+                <option value="EL">Grščina</option>
+                <option value="KA">Gruzijščina</option>
+                <option value="HE">Hebrejščina</option>
+                <option value="HI">Hindijščina</option>
+                <option value="ID">Indonezijščina</option>
+                <option value="GA">Irščina</option>
+                <option value="IS">Islandščina</option>
+                <option value="JA">Japonščina</option>
+                <option value="CA">Katalonščina</option>
+                <option value="ZH">Kitajščina (mandarinščina)</option>
+                <option value="KO">Korejščina</option>
+                <option value="LV">Latvijščina</option>
+                <option value="LB">Luksemburščina</option>
+                <option value="MT">Malteščina</option>
+                <option value="MN">Mongolščina</option>
+                <option value="NE">Nepalščina</option>
+                <option value="NL">Nizozemščina</option>
+                <option value="NO">Norveščina</option>
+                <option value="FA">Perzijščina</option>
+                <option value="PL">Poljščina</option>
+                <option value="PT">Portugalščina</option>
+                <option value="RO">Romunščina</option>
+                <option value="SK">Slovaščina</option>
+                <option value="SW">Svahili</option>
+                <option value="SV">Švedščina </option>
+                <option value="TA">Tamilščina</option>
+                <option value="TR">Turščina</option>
+                <option value="UR">Urdu</option>
+                <option value="CY">Valižanščina</option>
+                <option disabled>----------</option>
+                <option value="XX">Drugo (Če ni na seznamu, vpišite.)</option>
+            </select>
+            <script>
+                function FS3_firstLangSEL() {
+                    const otherFirst = document.getElementById("formS3_firstLangSEL").value;
+                    if (otherFirst == "XX") {
+                        document.getElementById("formS3_firstLangWRITE").hidden = false;
+                    }
+                    else {
+                        document.getElementById("formS3_firstLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <input class="form-control" type="text" id="formS3_firstLangWRITE" name="formS3_firstLangWRITE" width="100%"
+                placeholder="Vpišite jezik, ki ni na seznamu" hidden maxlength="50" />
+
+            <label class="label-form">Dvojezičnost od rojstva</label>
+            <select class="form-control" id="formS3_addLangTF" name="formS3_addLangTF" onchange="FS3_addLangTF()">
+                <option value="0" disabled selected>Izberite ...</option>
+                <option value="true">Da (izberite s seznama)</option>
+                <option value="false">Ne</option>
+                <option value="NoAns">Ne želim odgovoriti</option>
+            </select>
+            <script>
+                function FS3_addLangTF() {
+                    const additional = document.getElementById("formS3_addLangTF").value;
+                    if (additional == "true") {
+                        document.getElementById("formS3_addLangSEL").hidden = false;
+                    }
+                    else {
+                        document.getElementById("formS3_addLangSEL").hidden = true;
+                        document.getElementById("formS3_addLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <select class="form-control" width="100%" id="formS3_addLangSEL" name="formS3_addLangSEL"
+                onchange="FS3_addLangSEL()" hidden>
+                <option value="0" disabled selected>Izberite dodaten prvi jezik</option>
+                <option value="SQ">Albanščina</option>
+                <option value="EN">Angleščina</option>
+                <option value="BS">Bosanščina</option>
+                <option value="CNR">Črnogorščina</option>
+                <option value="HR">Hrvaščina</option>
+                <option value="IT">Italijanščina</option>
+                <option value="HU">Madžarščina</option>
+                <option value="MK">Makedonščina</option>
+                <option value="DE">Nemščina</option>
+                <option value="RU">Ruščina</option>
+                <option value="SL">Slovenščina</option>
+                <option value="SR">Srbščina</option>
+                <option value="ES">Španščina</option>
+                <option value="UK">Ukrajinščina</option>
+                <option disabled>----------</option>
+                <option value="AR">Arabščina</option>
+                <option value="HY">Armenščina</option>
+                <option value="EU">Baskovščina</option>
+                <option value="BE">Beloruščina</option>
+                <option value="BN">Bengalščina</option>
+                <option value="BG">Bolgarščina</option>
+                <option value="CS">Češčina</option>
+                <option value="DA">Danščina</option>
+                <option value="ET">Estonščina</option>
+                <option value="FI">Finščina</option>
+                <option value="FR">Francoščina</option>
+                <option value="EL">Grščina</option>
+                <option value="KA">Gruzijščina</option>
+                <option value="HE">Hebrejščina</option>
+                <option value="HI">Hindijščina</option>
+                <option value="ID">Indonezijščina</option>
+                <option value="GA">Irščina</option>
+                <option value="IS">Islandščina</option>
+                <option value="JA">Japonščina</option>
+                <option value="CA">Katalonščina</option>
+                <option value="ZH">Kitajščina (mandarinščina)</option>
+                <option value="KO">Korejščina</option>
+                <option value="LV">Latvijščina</option>
+                <option value="LB">Luksemburščina</option>
+                <option value="MT">Malteščina</option>
+                <option value="MN">Mongolščina</option>
+                <option value="NE">Nepalščina</option>
+                <option value="NL">Nizozemščina</option>
+                <option value="NO">Norveščina</option>
+                <option value="FA">Perzijščina</option>
+                <option value="PL">Poljščina</option>
+                <option value="PT">Portugalščina</option>
+                <option value="RO">Romunščina</option>
+                <option value="SK">Slovaščina</option>
+                <option value="SW">Svahili</option>
+                <option value="SV">Švedščina </option>
+                <option value="TA">Tamilščina</option>
+                <option value="TR">Turščina</option>
+                <option value="UR">Urdu</option>
+                <option value="CY">Valižanščina</option>
+                <option disabled>----------</option>
+                <option value="XX">Drugo (Če ni na seznamu, vpišite.)</option>
+            </select>
+            <script>
+                function FS3_addLangSEL() {
+                    console.log("asd")
+                    const additionalLang = document.getElementById("formS3_addLangSEL").value;
+                    if (additionalLang == "XX") {
+                        document.getElementById("formS3_addLangWRITE").hidden = false;
+                    } else {
+                        document.getElementById("formS3_addLangWRITE").hidden = true;
+                    }
+                }
+            </script>
+            <input class="form-control" type="text" id="formS3_addLangWRITE" name="formS3_addLangWRITE" width="100%"
+                placeholder="Vpišite jezik, ki ni na seznamu" hidden maxlength="50" />
+
+            <label class="label-form">Sedanji kraj in občina bivanja</label>
+            <input class="form-control" type="text" id="formS3_locationA" name="formS3_locationA" width="100%"
+                maxlength="100" placeholder="V obliki: Kraj, Občina" />
+
+            <label class="label-form">Kraj in občina bivanja v otroštvu</label>
+            <input class="form-control" type="text" id="formS3_locationB" name="formS3_locationB" width="100%"
+                maxlength="100" placeholder="V obliki: Kraj, Občina" />
+
+            <label class="label-form">Dodaten kraj in občina bivanja</label>
+            <p style="color:grey">Če ste leto ali več živeli, delali ali se šolali še v kakšnem tretjem kraju.</p>
+            <input class="form-control" type="text" id="formS3_locationC" name="formS3_locationC" width="100%"
+                maxlength="200" placeholder="V obliki: Kraj, Občina; Kraj, Občina" />
+
+            <label id="formS3_FILE_label" class="label-form">Soglasje (izpolnjeno in podpisano soglasje naložite v
+                formatu pdf ali kot
+                sliko)</label>
+            <input class="form-control" type="file" name="formS3_FILE" id="formS3_FILE"
+                accept="image/*,application/pdf" />
+        </div>
+        
+    </div>
+
+    <input id="submitButton" type="submit" form="formID" class="btn login-btn" hidden="True" value="Oddajte"
+        onsubmit="submitForms">
+
+    <script>
+        function submitForms() {
+
+            var NumSpk = document.getElementById('stGovorcev').value;
+            console.log(NumSpk)
+
+            document.getElementById('par_errors').hidden = true
+            document.getElementById('formAF_location_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_room_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_date_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_tool_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_description_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_keywords_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_source_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_channel_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_speech_label').setAttribute('style', 'color:black')
+            document.getElementById('formAF_FILE_label').setAttribute('style', 'color:black')
+            document.getElementById('formS1_name_label').setAttribute('style', 'color:black')
+            document.getElementById('formS1_genderSEL_label').setAttribute('style', 'color:black')
+            document.getElementById('formS1_age_label').setAttribute('style', 'color:black')
+            document.getElementById('formS1_FILE_label').setAttribute('style', 'color:black')
+            document.getElementById('formS2_name_label').setAttribute('style', 'color:black')
+            document.getElementById('formS2_genderSEL_label').setAttribute('style', 'color:black')
+            document.getElementById('formS2_age_label').setAttribute('style', 'color:black')
+            document.getElementById('formS2_FILE_label').setAttribute('style', 'color:black')
+            document.getElementById('formS3_name_label').setAttribute('style', 'color:black')
+            document.getElementById('formS3_genderSEL_label').setAttribute('style', 'color:black')
+            document.getElementById('formS3_age_label').setAttribute('style', 'color:black')
+            document.getElementById('formS3_FILE_label').setAttribute('style', 'color:black')
+
+            document.getElementById('formsContainer-AF').hidden = true;
+            document.getElementById('formsContainer-S1').hidden = true;
+            document.getElementById('formsContainer-S2').hidden = true;
+            document.getElementById('formsContainer-S3').hidden = true;
+
+            var errA = 0;
+            if (document.getElementById('formAF_source').value == "0") { errA = 1; document.getElementById('formAF_source_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_channel').value == "0") { errA = 1; document.getElementById('formAF_channel_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_speech').value == "0") { errA = 1; document.getElementById('formAF_speech_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_location').value == "") { errA = 1; document.getElementById('formAF_location_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_room').value == "") { errA = 1; document.getElementById('formAF_room_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_date').value == "") { errA = 1; document.getElementById('formAF_date_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_tool').value == "") { errA = 1; document.getElementById('formAF_tool_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_description').value == "") { errA = 1; document.getElementById('formAF_description_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_keywords').value == "") { errA = 1; document.getElementById('formAF_keywords_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formAF_FILE').value == "") { errA = 1; document.getElementById('formAF_FILE_label').setAttribute('style', 'color:red') }
+
+            var errS1 = 0;
+            var errS2 = 0;
+            var errS3 = 0;
+
+            if (document.getElementById('formS1_name').value == "") { errS1 = 1; document.getElementById('formS1_name_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formS1_age').value == "") { errS1 = 1; document.getElementById('formS1_age_label').setAttribute('style', 'color:red') }
+            if ((document.getElementById('formS1_genderSEL').value == "0")
+                || ((document.getElementById('formS1_genderSEL').value == "o")
+                    && (document.getElementById('formS1_genderWRITE').value == ""))) { errS1 = 1; document.getElementById('formS1_genderSEL_label').setAttribute('style', 'color:red') }
+            if (document.getElementById('formS1_FILE').value == "") { errS1 = 1; document.getElementById('formS1_FILE_label').setAttribute('style', 'color:red') }
+
+            if (NumSpk >= 2) {
+                if (document.getElementById('formS2_name').value == "") { errS2 = 1; document.getElementById('formS2_name_label').setAttribute('style', 'color:red') }
+                if (document.getElementById('formS2_age').value == "") { errS2 = 1; document.getElementById('formS2_age_label').setAttribute('style', 'color:red') }
+                if ((document.getElementById('formS2_genderSEL').value == "0")
+                    || ((document.getElementById('formS2_genderSEL').value == "o")
+                        && (document.getElementById('formS2_genderWRITE').value == ""))) { errS2 = 1; document.getElementById('formS2_genderSEL_label').setAttribute('style', 'color:red') }
+                if (document.getElementById('formS2_FILE').value == "") { errS2 = 1; document.getElementById('formS2_FILE_label').setAttribute('style', 'color:red') }
+            }
+
+            if (NumSpk >= 3) {
+                if (document.getElementById('formS3_name').value == "") { errS3 = 1; document.getElementById('formS3_name_label').setAttribute('style', 'color:red') }
+                if (document.getElementById('formS3_age').value == "") { errS3 = 1; document.getElementById('formS3_age_label').setAttribute('style', 'color:red') }
+                if ((document.getElementById('formS3_genderSEL').value == "0")
+                    || ((document.getElementById('formS3_genderSEL').value == "o")
+                        && (document.getElementById('formS3_genderWRITE').value == ""))) { errS3 = 1; document.getElementById('formS3_genderSEL_label').setAttribute('style', 'color:red') }
+                if (document.getElementById('formS3_FILE').value == "") { errS3 = 1; document.getElementById('formS3_FILE_label').setAttribute('style', 'color:red') }
+            }
+
+            var err = errA + errS1 + errS2 + errS3;
+            if (err >= 1) {
+                document.getElementById('par_errors').removeAttribute('hidden');
+                if (errA == 1) { document.getElementById('formsContainer-AF').hidden = false; }
+                if (errS1 == 1) { document.getElementById('formsContainer-S1').hidden = false; }
+                if (errS2 == 1) { document.getElementById('formsContainer-S2').hidden = false; }
+                if (errS3 == 1) { document.getElementById('formsContainer-S3').hidden = false; }
+                $('html,body').scrollTop(0);
+                return false;
+            }
+
+            $('#modalWait').modal('show');
+            return true;
+        }
+    </script>
+
+</form>
+
+<a href="/terms" target="_blank">Pogoji sodelovanja</a>
+
+<p data-toggle="modal" data-target="#modalTestni" style="color:#007bff" role="dialog">Kako oddam testni posnetek?</p>
+
+<div class="modal fade" id="modalTestni" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Testni posnetek?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                V primeru dvomov o kvaliteti posnetka nam predhodno pošljite kratek, ne več kot minuto dolg testni
+                posnetek. Pošljite ga na <a href="mailto:MAIL">MAIL</a> pod zadevo »Testni posnetek«.
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalWait" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nalaganje podatkov</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Posnetek se nalaga. Prosimo počakajte.
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

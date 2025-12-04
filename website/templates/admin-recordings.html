@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Administracija posnetkov{% endblock %}
+{% block content %}
+
+<form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+
+    <div style="align-content: center">
+        <label for="number-select">Izberite posnetek:</label>
+        <select class="form-control" id="idSelect" name="idSelect" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptions|safe }}
+        </select>
+        <button id="showSample" name="showSample" type="submit" class="btn login-btn" value="showSample">Prikaži posnetek</button>
+    </div>
+
+    <div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Izpisek podatkov za datotke WAV</p>
+        <p style="font-weight: 600; text-align: left;">ID = {{ showID }}</p>
+        <pre>{{ soxContent|safe }}</pre>
+        <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+        <input type="submit" class="btn half-btn" name="showPrev" id="showPrev" value="Prikaži prejšnji posnetek">
+        <input type="submit" class="btn half-btn" name="showNext" id="showPrev" value="Prikaži naslednji posnetek">
+    </div><div class="childDiv" {{ hiddenDiv }}>
+        <input type="submit" class="btn login-btn" name="dwnlFile" id="dwnlFile" value="Prenesi zvočno datoteko">
+        <label id="formAF_FILE_label" class="label-form">Naloži novo avdio datoteko - naložite datoteko v formatu WAV z vzorčenjem 
+            44,1 kHz, bitno globino 16 bit in enim kanalom (mono).</label>
+            <input class="form-control" type="file" id="formAF_FILE" name="formAF_FILE" accept="audio/*,video/*" />
+            <input type="submit" class="btn login-btn" name="changeFile" id="changeFile" value="Naloži novo datoteko">
+    </div>
+    
+    <div style="align-content: center">
+        <hr />
+        <button id="showSample" name="dwnlAll" type="submit" class="btn login-btn" value="dwnlAll">Prenesi vse posnetke</button>
+    </div>
+</form>
+
+{% endblock %}
+

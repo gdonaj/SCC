@@ -1,0 +1,18 @@
+{% extends "base.html" %} 
+{% block title %}Administracija{% endblock %} 
+{% block content %}
+
+<a href="/admin-users">Administracija uporabnikov</a>
+<a href="/admin-recordings">Administracija avdio datotek</a>
+<a href="/admin-samples">Administracija posnetkov</a>
+<a href="/admin-speakers">Administracija govorcev</a>
+<a href="/admin-transcripts">Administracija transkripcij</a>
+<p></p>
+<a href="/admin-export-users">Izvoz tabele uporabnikov</a>
+<a href="/admin-export-samples">Izvoz tabele posnetkov</a>
+<a href="/admin-export-speakers">Izvoz tabele govorcev</a>
+<a href="/admin-export-transcripts">Izvoz tabele transkripcij</a>
+<p></p>
+<a href="/admin-dump-database">Izpis iz podatkovne baze</a> 
+
+{% endblock %}

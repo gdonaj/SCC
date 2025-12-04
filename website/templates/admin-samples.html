@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Administracija podatkov o posnetkih{% endblock %}
+{% block content %}
+
+<form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+
+    <div style="align-content: center">
+        <label for="number-select">Izberite posnetek:</label>
+        <select class="form-control" id="idSelect" name="idSelect" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptions|safe }}
+        </select>
+        <button id="showSample" name="showSample" type="submit" class="btn login-btn" value="showSpeaker">Prikaži posnetek</button>
+    </div>
+
+    <div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Izpisek iz baze</p>
+        <p>{{ dataBaseContent|safe }}</p>
+
+        <input type="submit" class="btn small-btn" name="dwnlFiles" id="dwnlFiles" value="Prenesi zvočno datoteko">
+        <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+        <input type="submit" class="btn half-btn" name="showPrev" id="showPrev" value="Prikaži prejšnjega">
+        <input type="submit" class="btn half-btn" name="showNext" id="showPrev" value="Prikaži naslednjega">
+        
+        <hr />
+        {{ linkSpeakerA|safe }}
+        <br>
+        {{ linkSpeakerB|safe }}
+        <br>
+        {{ linkSpeakerC|safe }}
+        <br>
+
+    </div><div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Urejanje podatkov</p>
+
+        <label>Text ID</label>
+        <input class="form-control" type="text" id="dataTextID" name="dataTextID" width="100%" maxlength="500" value="{{ dataTextID }}">
+
+        <label>Source ID</label>
+        <input class="form-control" type="text" id="dataSourceID" name="dataSourceID" width="100%" maxlength="500" value="{{ dataSourceID }}">
+
+        <label>Recording ID</label>
+        <input class="form-control" type="text" id="dataRecordingID" name="dataRecordingID" width="100%" maxlength="500" value="{{ dataRecordingID }}">
+
+        <label>Podkorpus</label>
+        <input class="form-control" type="text" id="dataSubcorpus" name="dataSubcorpus" width="100%" maxlength="100" value="{{ dataSubcorpus }}">
+
+        <label>Opis</label>
+        <input class="form-control" type="text" id="dataDesciption" name="dataDesciption" width="100%" maxlength="1000" value="{{ dataDesciption }}">
+
+        <label>Datum</label>
+        <input class="form-control" type="text" id="dataDate" name="dataDate" width="100%" maxlength="20" value="{{ dataDate }}">
+
+        <label>Vir</label>
+        <input class="form-control" type="text" list="listSource" id="dataSource" name="dataSource" width="100%" maxlength="100" value="{{ dataSource }}">
+        <datalist id="listSource">
+            <option value="lastni posnetek" />
+            <option value="doniran posnetek" />
+        </datalist>
+
+        <label>Lokacija</label>
+        <input class="form-control" type="text" id="dataLocation" name="dataLocation" width="100%" maxlength="100" value="{{ dataLocation }}">
+
+        <label>Vrsta govora</label>
+        <input class="form-control" type="text" list="listSpeechDomain" id="dataSpeechDomain" name="dataSpeechDomain" width="100%" maxlength="100" value="{{ dataSpeechDomain }}">
+        <datalist id="listSpeechDomain">
+            <option value="družabni pogovor" />
+            <option value="intervju" />
+            <option value="diskusija" />
+            <option value="navodila" />
+            <option value="pripoved" />
+            <option value="razlaga" />
+        </datalist>
+
+        <label>Tip govora</label>
+        <input class="form-control" type="text" list="listSpeechType" id="dataSpeechType" name="dataSpeechType" width="100%" maxlength="100" value="{{ dataSpeechType }}">
+        <datalist id="listSpeechType">
+            <option value="zasebni" />
+        </datalist>
+
+        <label>Kanal</label>
+        <input class="form-control" type="text" list="listChannel" id="dataChannel" name="dataChannel" width="100%" maxlength="100" value="{{ dataChannel }}">
+        <datalist id="listChannel">
+            <option value="osebni stik" />
+            <option value="avdio na daljavo" />
+            <option value="video na daljavo" />
+        </datalist>
+
+        <label>Ključne besede</label>
+        <input class="form-control" type="text" id="dataKeywords" name="dataKeywords" width="100%" maxlength="200" value="{{ dataKeywords }}">
+
+        <label>Naprava</label>
+        <input class="form-control" type="text" id="dataDevice" name="dataDevice" width="100%" maxlength="200" value="{{ dataDevice }}">
+
+        <label>Prostori</label>
+        <input class="form-control" type="text" id="dataRooms" name="dataRooms" width="100%" maxlength="200" value="{{ dataRooms }}">
+
+        <label>Kvaliteta</label>
+        <input class="form-control" type="text" list="listQuality" id="dataQuality" name="dataQuality" width="100%" maxlength="20" value="{{ dataQuality }}">
+        <datalist id="listQuality">
+            <option value="nezadostna" />
+            <option value="zadostna" />
+            <option value="dobra" />
+            <option value="zelo dobra" />
+            <option value="odlična" />
+        </datalist>
+
+        <label>URL</label>
+        <input class="form-control" type="text" id="dataURL" name="dataURL" width="100%" maxlength="200" value="{{ dataURL }}">
+
+        <label>Odobrena dolžina (V obliki HH:MM:SS. Če zbrišemo, se privzame celotna dolžina)</label>
+        <input class="form-control" type="text" id="dataLenAprv" name="dataLenAprv" width="100%" maxlength="8" value="{{ dataLenAprv }}">
+
+        <input class="checkmark" type="checkbox" id="dataChecked" name="dataChecked" {{ dataChecked }}>
+        <label for="">Pregledan</label><br>
+
+        <input class="checkmark" type="checkbox" id="dataApprovedQ" name="dataApprovedQ" {{ dataApprovedQ }}>
+        <label for="">Odobrena kvaliteta</label><br>
+
+        <input class="checkmark" type="checkbox" id="dataApprovedForT" name="dataApprovedForT" {{ dataApprovedForT }}>
+        <label for="">Odobren za začetek transkripcije</label><br>
+
+        <label>Komentar za transkriptorja</label>
+        <textarea class="form-control" type="text" rows="3" id="dataCommentForT" name="dataCommentForT" width="100%" maxlength="200">{{ dataCommentForT }}</textarea>
+
+        <input class="checkmark" type="checkbox" id="dataStartedT" name="dataStartedT" {{ dataStartedT }}>
+        <label for="">Izdelovanje transkripcije je bilo začeto</label><br>
+
+        <input class="checkmark" type="checkbox" id="dataApprovedT" name="dataApprovedT" {{ dataApprovedT }}>
+        <label for="">Traskripcije končane in odobrene</label><br>
+
+        <hr>
+
+        <label>Komentar pri urejanju podatkov</label>
+        <textarea class="form-control" type="text" rows="3"  id="dataEditorComment" name="dataEditorComment" width="100%" maxlength="200">{{ dataEditorComment }}</textarea>
+
+        <input type="submit" class="btn login-btn" name="changeData" id="changeData" value="Shrani spremembe">
+    </div>
+
+</form>
+
+{% endblock %}

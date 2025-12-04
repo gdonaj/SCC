@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Administracija uporabnikov{% endblock %}
+{% block content %}
+
+<form method="POST" id="formID" name="formID" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+
+    <div style="align-content: center">
+        <label for="number-select">Izberite uporabnika:</label>
+        <select class="form-control" id="idSelect" name="idSelect" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptions|safe }}
+        </select>
+        <button id="showUser" name="showUser" type="submit" class="btn login-btn" value="showUser">Prikaži uporabnika</button>
+    </div>
+
+    <div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Izpisek iz baze</p>
+        <p>{{ dataBaseContent|safe }}</p>
+        <input class="hidden" id="currentID" name="currentID" value="{{ showID }}">
+        <input type="submit" class="btn half-btn" name="showPrev" id="showPrev" value="Prikaži prejšnjega">
+        <input type="submit" class="btn half-btn" name="showNext" id="showPrev" value="Prikaži naslednjega">
+    </div><div class="childDiv" {{ hiddenDiv }}>
+        <p style="font-weight: 600; text-align: center;">Urejanje podatkov</p>
+        <label>Ime in priimek</label>
+        <input class="form-control" type="text" id="nameSurname" name="nameSurname" width="100%" maxlength="50" value="{{ dataNS }}">
+        <label>Elektronska pošta</label>
+        <input class="form-control" type="text" id="email" name="email" width="100%" maxlength="50" value="{{ dataEM }}">
+        <input class="checkmark" type="checkbox" id="isAdmin" name="isAdmin" {{ dataADM }}>
+        <label for="isAdmin">Administrator in urednik podatkov</label><br>
+        <input class="checkmark" type="checkbox" id="isTranscriber" name="isTranscriber" {{ dataTRS }}>
+        <label for="isTranscriber">Transkriptor</label><br>
+        <label>Izbrana nagrada:</label>
+        <textarea class="form-control" type="text" id="prizeSelect" rows="3" name="prizeSelect" width="100%" maxlength="200">{{ dataPSel }}</textarea>
+        <input class="checkmark" type="checkbox" id="prizeSend" name="prizeSend" {{ dataPSnd }}>
+        <label for="vehicle1">Nagrada poslana</label><br>
+        <input type="submit" class="btn login-btn" name="changeData" id="changeData" value="Shrani spremembe">
+    </div>
+
+</form>
+
+{% endblock %}

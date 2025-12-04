@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Administracija podatkov o posnetkih{% endblock %}
+{% block content %}
+
+<form method="POST" id="formSelRec" name="formSelRec" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+    <div style="align-content: center">
+        <label for="number-select">Izberite posnetek:</label>
+        <select class="form-control" id="recID" name="recID" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptionsRec|safe }}
+        </select>
+        <input class="hidden" id="trsID" name="trsID" value="0">
+        <button id="showRec" name="showRec" type="submit" class="btn login-btn" value="showRec">Prikaži posnetek</button>
+    </div>
+</form>
+
+<form {{ hiddenSel }} method="POST" id="formSelTrs" name="formSelTrs" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+    <p>Posnetek: {{ recID }}</p>
+    <div style="align-content: center">
+        <input class="hidden" id="recID" name="recID" value="{{ recID }}">
+        <label for="number-select">Izberite transkripcijo:</label>
+        <select class="form-control" id="trsID" name="trsID" style="width: 300px;">
+            <option selected value="0">Izberite ...</option>
+            {{ dropdownOptionsTrs|safe }}
+        </select>
+        <button id="showTrs" name="showTrs" type="submit" class="btn login-btn" value="showTrs">Prikaži transkripcijo</button>
+    </div>
+</form>
+
+<form {{ hiddenEdt }} method="POST" id="formTrs" name="formTrs" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+
+    <div class="childDiv">
+    
+        <p style="font-weight: 600; text-align: center;">Izpisek iz baze</p>
+        <p>{{ dataBaseContent|safe }}</p>
+        <input type="submit" class="btn small-btn" name="dwnlFiles" id="dwnlFiles" value="Prenesi transkripcijo">
+        <input class="hidden" id="recID" name="recID" value="{{ recID }}">
+        <input class="hidden" id="trsID" name="trsID" value="{{ trsID }}">
+    
+    </div><div class="childDiv">
+    
+        <p style="font-weight: 600; text-align: center;">Urejanje podatkov</p>
+
+        <label>Tip transkripcije</label>
+        <select class="form-control" id="typeSel" name="typeSel" style="width: 300px;">
+            <option {{ SelPog }} value="Pogovorna">Pogovorna</option>
+            <option {{ SelStd }} value="Standardizirana">Standardizirana</option>
+        </select>
+
+        <input class="checkmark" type="checkbox" id="aproove" name="aproove" {{ trsApproved }}>
+        <label for="">Odobreno</label><br>
+
+        <input type="submit" class="btn login-btn" name="changeData" id="changeData" value="Shrani spremembe">
+    </div>
+
+</form>
+
+{% endblock %}

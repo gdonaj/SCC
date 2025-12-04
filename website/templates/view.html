@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+{% block title %}Ogled oddanih posnetkov{% endblock %} 
+{% block username %} uporabniško ime {% endblock %} 
+{% block content %}
+
+<div>
+    <h5>Povzetek</h5>
+    <ul>Število naloženih posnetkov: {{ numAll }}
+    <br>Število odobrenih posnetkov: {{ numApr }}
+    <br>Skupna dolžina naloženih posnetkov: {{ lenAll }}
+    <br>Skupna dolžina odobrenih posnetkov: {{ lenApr }}
+</div>
+<div>
+    <h5>Posnetki</h5>
+    {{ samplesList|safe }}
+</div>
+<div>
+    <small>Samodejni izračun dolžine posnetkov deluje za posnetke v formatu WAV. Za vse ostale formate se dolžina zapiše po pregledu.</small>
+</div>
+{% endblock %}

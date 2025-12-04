@@ -1,0 +1,13 @@
+{% extends "base.html" %} 
+{% block title %}Uspeh{% endblock %} 
+{% block content %}
+
+<h5>Uspešno ste oddali posnetek.</h5>
+
+Posnetek je dobil zaporedno številko {{ id }}.
+
+<a href="/" class="btn login-btn">Želim oddati še en posnetek</a>
+<a href="/view" class="btn login-btn">Ogled posnetkov</a>
+<a href="/logout" class="btn login-btn">Odjava</a>
+
+{% endblock %}

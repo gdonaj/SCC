@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Urejanje podatkov uporabnika{% endblock %}
+{% block content %}
+
+<h4>Spremembe podatkov uporabnika</h4>
+<form method="POST" id="formData" name="formData" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+    <label for="newNameSurname">Ime in priimek:</label>
+    <input class="form-control" type="text" id="newNameSurname" name="newNameSurname" value="{{ newNameSurname }}">
+    <label for="newEmail">Elektronska pošta:</label>
+    <input class="form-control" type="email" id="newEmail" name="newEmail" value="{{ newEmail }}">
+    <input type="submit" class="btn login-btn" name="changeData" id="changeData" value="Spremeni podatke">
+</form>
+
+<h4>Sprememba gesla</h4>
+<form method="POST" id="formPass" name="formPass" enctype="multipart/form-data" onkeydown="if(event.keyCode === 13) { return false; }">
+    <label for="oldPass">Vpišite staro geslo:</label>
+    <input class="form-control" type="password" id="oldPass" name="oldPass" value="">
+    <label for="newPass1">Vpišite novo geslo:</label>
+    <input class="form-control" type="password" id="newPass1" name="newPass1" value="">
+    <label for="newPass2">Ponovite novo geslo:</label>
+    <input class="form-control" type="password" id="newPass2" name="newPass2" value="">
+    <input type="submit" class="btn login-btn" name="changePass" id="changePass" value="Spremeni geslo">
+</form>
+
+{% endblock %}

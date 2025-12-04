@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Registracija{% endblock %}
+{% block content %}
+
+<div class="image-main">
+  <img src="/static/logo.svg" width="100%">
+</div>
+
+<div class="login-section">
+  <form method="POST">
+    <h3 align="center">Registracija</h3>
+    <div class="form-group">
+      <label for="username">Uporabniško ime</label>
+      <input required type="username" class="form-control" id="username" name="username"
+        placeholder="Vpišite uporabniško ime, ki ga želite imeti" />
+    </div>
+    <div class="form-group">
+      <label for="name">Ime in priimek</label>
+      <input required type="text" class="form-control" id="name" name="name" placeholder="Vpišite ime in priimek" />
+    </div>
+    <div class="form-group">
+      <label for="email">Elektronska pošta</label>
+      <input required type="email" class="form-control" id="email" name="email" placeholder="Vpišite elektronsko pošto" />
+    </div>
+    <div class="form-group">
+      <label for="password1">Geslo</label>
+      <input required type="password" class="form-control" id="password1" name="password1"
+        placeholder="Vpišite geslo, dolgo vsaj 8 znakov" />
+    </div>
+    <div class="form-group">
+      <label for="password2">Geslo (ponovite)</label>
+      <input required type="password" class="form-control" id="password2" name="password2" placeholder="Ponovno vpišite geslo" />
+    </div>
+    <div class="form-group">
+      <input required type="checkbox" id="termsofservice" name="termsofservice" />
+      <label for="termsofservice">Strinjam se s </label>
+      <a href="/terms" target="_blank">pogoji sodelovanja</a>.
+    </div>
+
+    <button type="submit" class="btn login-btn">Registracija</button>
+
+    <a href="/login">Prijava</a>
+    <br><a href="/terms" target="_blank">Pogoji sodelovanja</a>
+    
+    <!-- <br><label data-toggle="modal" data-target="#modalAnonimnost" style="color:#007bff" role="dialog">Ali bo moje
+      sodelovanje anonimno?</label><br> -->
+
+    <div class="modal fade" id="modalAnonimnost" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Anonimnost uporabnikov?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!--<p>Vaše sodelovanje bo anonimno. Govorci boste poimenovani z anonimno kodo, iz katere ne bo mogoče ugotoviti
+            vaše identitete. Osebne podatke potrebujemo za namen podelitve nagrad, saj bo vsak registrirani uporabnik,
+            ko bo podaril skupaj 150 minut posnetkov ustrezne kakovosti, prejel praktično nagrado.</p>-->
+            <p>Vaše sodelovanje bo anonimno. Osebne podatke potrebujemo za namen podelitve nagrad, saj bo vsak
+              registrirani uporabnik,
+              ko bo podaril skupaj 150 minut posnetkov ustrezne kakovosti, prejel praktično nagrado.</p>
+            <p>Govorci bodo poimenovani z anonimno kodo, iz katere ne bo mogoče ugotoviti njihovih identitet.</p>
+            <p>Več o pogojih uporabe in varovanju podatkov najdete <a href="/terms" target="_blank">tukaj</a>.</p>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}
